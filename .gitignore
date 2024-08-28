@@ -1,0 +1,47 @@
+.vscode/
+.vs
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.tmp
+*.log
+*.dmp
+*.pdb
+*.swp
+*.ncb
+*.suo
+*.sdf
+*.dbmdl
+*.bak
+
+# Ignore NuGet packages and related files
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Ignore build output directories
+bin/
+obj/
+out/
+
+# Ignore Rider IDE specific files
+.idea/
+
+# Ignore logs
+*.log
+
+# Ignore coverage results
+coverage/
+*.cover
+*.coverage
+*.coveragexml
+
+# Ignore WebDriver binaries and other runtime dependencies
+webdriver/
