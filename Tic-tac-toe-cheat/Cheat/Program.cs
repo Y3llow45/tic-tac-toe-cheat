@@ -1,35 +1,33 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 
-
-namespace Cheat
+namespace BrowserAutomation
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            using IWebDriver driver = new ChromeDriver();
-
+            var options = new ChromeOptions();
+            options.AddArgument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
+            using IWebDriver driver = new ChromeDriver(options);
             try
             {
-                driver.Navigate().GoToUrl("https://www.google.com/search?client=firefox-b-d&q=tic+tac+toe");
+                driver.Navigate().GoToUrl("https://www.google.com/search?q=tic+tac+toe");
 
-                // Find an element by its name attribute and interact with it
-                IWebElement exampleElement = driver.FindElement(By.Name("exampleName"));
-                exampleElement.SendKeys("Some text");
+                System.Threading.Thread.Sleep(1000);
 
-                // Perform actions like clicking a button
-                IWebElement button = driver.FindElement(By.Id("exampleButtonId"));
-                button.Click();
+                new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(
+                d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
+                //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                System.Threading.Thread.Sleep(1000);
+                IWebElement corner = driver.FindElement(By.XPath("//td[@jsname='WfZakb']"));
+                corner.Click();
 
-                // Extract text from an element
-                IWebElement resultElement = driver.FindElement(By.ClassName("resultClassName"));
-                Console.WriteLine(resultElement.Text);
-
-                // Optionally, wait for elements to load
-                // WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                /*IWebElement resultElement = driver.FindElement(By.ClassName("resultClassName"));
+                Console.WriteLine(resultElement.Text);*/
+                //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
                 // IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("elementId")));
             }
             catch (Exception ex)
