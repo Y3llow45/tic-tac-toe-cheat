@@ -82,6 +82,8 @@ _TeamCity*
 
 # DotCover is a Code Coverage Tool
 *.dotCover
+.venv
+chromedriver-win64
 
 # NCrunch
 *.ncrunch*
