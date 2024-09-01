@@ -11,10 +11,7 @@ driver = webdriver.Firefox(service=service)
 def main():
   load()
   setClickables()
-  bestFirstMove = driver.find_element(By.XPATH, "//td[@jsname='WfZakb' and @data-col='0']")
-  bestFirstMove.click()
-  time.sleep(2)
-
+  btns[2].click()
   time.sleep(20)
   driver.quit()
 
@@ -28,17 +25,21 @@ def load():
   time.sleep(2)
 
 def setClickables():
+  global btns
   global restart_button
-  global btn1
-  global btn2
-  global btn3
-  global btn4
-  global btn5
-  global btn6
-  global btn7
-  global btn8
-  global btn9
-  restart_button = driver.find_elements(By.CLASS_NAME, 'lv7K9c')[2]
+  btns = [None] * 9
+    
+  wait = WebDriverWait(driver, 2)
+  for i in range(3):
+    for j in range(3):
+      btns[i * 3 + j] = wait.until(EC.presence_of_element_located(
+        (By.XPATH, f"//td[@jsname='WfZakb' and @data-col='{j}' and @data-row='{i}']")
+      ))
+  restart_buttons = wait.until(EC.presence_of_all_elements_located(
+    (By.CLASS_NAME, 'lv7K9c')
+  ))
+  if len(restart_buttons) > 2:
+    restart_button = restart_buttons[2]
 
 def restart():
   restart_button.click()
