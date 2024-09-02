@@ -11,16 +11,17 @@ X = 'X'
 O = 'O'
 EMPTY = ' '
 board = [[EMPTY for _ in range(3)] for _ in range(3)]
+score = [0,0]   # X,O
 
 def main():
   load()
-  setClickables()
+  set_clickables()
   btns[0].click()
-  # check opponent selection
   # Minimax() 3x3 list of lists
-  time.sleep(4)
-  update_board()
-  print(board)
+  for i in range(200):
+    update_board()
+    print(board)
+    time.sleep(1)
   time.sleep(20)
   driver.quit()
 
@@ -33,7 +34,7 @@ def load():
   div.click()
   time.sleep(2)
 
-def setClickables():
+def set_clickables():
   global btns
   global restart_button
   btns = [None] * 9
@@ -53,23 +54,24 @@ def setClickables():
 def update_board():   
   for i in range(3):
     for j in range(3):
-      #x_svg_xpath = f"//td[@jsname='WfZakb' and @data-col='{j}' and @data-row='{i}']//svg[@jsname='uECznc']"
-      #o_svg_xpath = f"//td[@jsname='WfZakb' and @data-col='{j}' and @data-row='{i}']//svg[@jsname='D7yUae']"
       x_css_selector = f"td[jsname='WfZakb'][data-col='{j}'][data-row='{i}'] svg[jsname='uECznc']"
       o_css_selector = f"td[jsname='WfZakb'][data-col='{j}'][data-row='{i}'] svg[jsname='D7yUae']"
-            
-      #x_element = driver.find_element(By.XPATH, x_svg_xpath)
-      #o_element = driver.find_element(By.XPATH, o_svg_xpath)
       x_element = driver.find_element(By.CSS_SELECTOR, x_css_selector)
       o_element = driver.find_element(By.CSS_SELECTOR, o_css_selector)
-            
+      
       if x_element.is_displayed():
         board[i][j] = X
       elif o_element.is_displayed():
         board[i][j] = O
       else:
         board[i][j] = EMPTY
-    return board
+  return board
+
+def check_score():
+  x_score_element = driver.find_element(By.XPATH, "//span[@jsname='AvUL5b']")
+  o_score_element = driver.find_element(By.XPATH, "//span[@jsname='H3g9pe']")
+  print(x_score_element.text)
+  print(o_score_element.text)
 
 def restart():
   restart_button.click()
