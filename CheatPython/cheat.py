@@ -4,9 +4,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import Minimax
 
 service = Service(executable_path='./driver/geckodriver.exe')
 driver = webdriver.Firefox(service=service)
+driver.set_window_size(700, 700)
 X = 'X'
 O = 'O'
 EMPTY = ' '
@@ -16,12 +18,21 @@ score = [0,0]   # X,O
 def main():
   load()
   set_clickables()
-  btns[0].click()
-  # Minimax() 3x3 list of lists
-  for i in range(200):
+  #btns[0].click()
+  while True:
+    time.sleep(2)
     update_board()
-    print(board)
-    time.sleep(1)
+    print(board[0])
+    print(board[1])
+    print(board[2])
+    time.sleep(5)
+    if Minimax.check_winner(board) == 'X' or Minimax.check_winner(board) == 'O':
+      print('win')
+      break
+    best_move = Minimax.minimax(board, 0, True)
+    print(best_move)
+    btns[best_move].click()
+
   time.sleep(20)
   driver.quit()
 
