@@ -17,24 +17,26 @@ board = [[EMPTY for _ in range(3)] for _ in range(3)]
 score = [0,0]   # X,O
 
 def check_end():
-  if Minimax.check_winner() is not None or Minimax.is_full():
+  global isPlaying
+  if Minimax.check_winner(board) is not None or Minimax.is_full(board):
+    time.sleep(2)
+    print(Minimax.check_winner(board))
     isPlaying = False
     restart()
 
 def game():
   while isPlaying:
-    check_end()
-    time.sleep(2)
+    time.sleep(1)
     update_board()
+    #check_end()
     print(board[0])
     print(board[1])
     print(board[2])
-    if Minimax.check_winner(board) == 'X' or Minimax.check_winner(board) == 'O':
-      print('win')
-      break
     best_move = Minimax.find_best_move(board)
     if best_move is not None:
       btns[best_move[0]*3+best_move[1]].click()
+      board[best_move[0]][best_move[1]] = X
+      check_end()
     else:
       print("No valid moves left")
 
@@ -94,6 +96,7 @@ def check_score():
   print(o_score_element.text)
 
 def restart():
+  global isPlaying
   restart_button.click()
   time.sleep(2)
   isPlaying = True
