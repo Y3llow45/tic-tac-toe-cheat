@@ -20,3 +20,6 @@ def check_winner(board):
   
   return None
 
+def is_full(board):
+  return all(cell != EMPTY for row in board for cell in row)
+
