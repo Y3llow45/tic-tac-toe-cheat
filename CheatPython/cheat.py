@@ -12,29 +12,38 @@ driver.set_window_size(700, 700)
 X = 'X'
 O = 'O'
 EMPTY = ' '
+isPlaying = True
 board = [[EMPTY for _ in range(3)] for _ in range(3)]
 score = [0,0]   # X,O
 
-def main():
-  load()
-  set_clickables()
-  #btns[0].click()
-  while True:
+def check_end():
+  if Minimax.check_winner() is not None or Minimax.is_full():
+    isPlaying = False
+    restart()
+
+def game():
+  while isPlaying:
+    check_end()
     time.sleep(2)
     update_board()
     print(board[0])
     print(board[1])
     print(board[2])
-    time.sleep(5)
     if Minimax.check_winner(board) == 'X' or Minimax.check_winner(board) == 'O':
       print('win')
       break
-    best_move = Minimax.minimax(board, 0, True)
-    print(best_move)
-    btns[best_move].click()
+    best_move = Minimax.find_best_move(board)
+    if best_move is not None:
+      btns[best_move[0]*3+best_move[1]].click()
+    else:
+      print("No valid moves left")
 
-  time.sleep(20)
-  driver.quit()
+def main():
+  load()
+  set_clickables()
+  game()
+  #time.sleep(2)
+  #driver.quit()
 
 def load():
   driver.get("https://www.google.com/search?q=tic+tac+toe")
@@ -86,6 +95,8 @@ def check_score():
 
 def restart():
   restart_button.click()
+  time.sleep(2)
+  isPlaying = True
 
 if __name__ == "__main__":
   main()
